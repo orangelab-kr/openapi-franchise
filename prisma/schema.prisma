@@ -11,14 +11,13 @@ generator clientModel {
   binaryTargets = ["native", "rhel-openssl-1.0.x"]
 }
 
-// 플랫폼
-model PlatformModel {
-  platformId String @id @default(uuid())
+// 프렌차이즈
+model FranchiseModel {
+  franchiseId String @id @default(uuid())
 
-  name       String
-  users      PlatformUserModel[]
-  accessKeys PlatformAccessKeyModel[]
-  logs       PlatformLogModel[]
+  name  String
+  users FranchiseUserModel[]
+  logs  FranchiseLogModel[]
 
   createdAt            DateTime               @default(now())
   updatedAt            DateTime               @updatedAt
@@ -26,42 +25,42 @@ model PlatformModel {
   PermissionGroupModel PermissionGroupModel[]
 }
 
-// 플랫폼 사용자
-model PlatformUserModel {
-  platformUserId String @id @default(uuid())
+// 프렌차이즈 사용자
+model FranchiseUserModel {
+  franchiseUserId String @id @default(uuid())
 
-  platformId String
-  platform   PlatformModel @relation(fields: [platformId], references: [platformId])
+  franchiseId String
+  franchise   FranchiseModel @relation(fields: [franchiseId], references: [franchiseId])
 
   name  String
   email String
   phone String
 
-  methods PlatformUserMethodModel[]
+  methods FranchiseUserMethodModel[]
 
   permissionGroupId String
   permissionGroup   PermissionGroupModel @relation(fields: [permissionGroupId], references: [permissionGroupId])
 
-  createdAt                DateTime                   @default(now())
-  updatedAt                DateTime                   @updatedAt
-  deletedAt                DateTime?
-  PlatformUserSessionModel PlatformUserSessionModel[]
-  PlatformLogModel         PlatformLogModel[]
+  createdAt                 DateTime                    @default(now())
+  updatedAt                 DateTime                    @updatedAt
+  deletedAt                 DateTime?
+  FranchiseUserSessionModel FranchiseUserSessionModel[]
+  FranchiseLogModel         FranchiseLogModel[]
 }
 
-// 플랫폼 로그인 연동 제공자
-enum PlatformUserMethodProvider {
+// 프렌차이즈 로그인 연동 제공자
+enum FranchiseUserMethodProvider {
   LOCAL // 로컬(이메일, 비밀번호)
 }
 
-// 플랫폼 로그인 연동
-model PlatformUserMethodModel {
-  platformUserMethodId String @id @default(uuid())
+// 프렌차이즈 로그인 연동
+model FranchiseUserMethodModel {
+  franchiseUserMethodId String @id @default(uuid())
 
-  platformUserId String
-  platformUser   PlatformUserModel @relation(fields: [platformUserId], references: [platformUserId])
+  franchiseUserId String
+  franchiseUser   FranchiseUserModel @relation(fields: [franchiseUserId], references: [franchiseUserId])
 
-  provider PlatformUserMethodProvider
+  provider FranchiseUserMethodProvider
   identity String
 
   createdAt DateTime  @default(now())
@@ -69,46 +68,39 @@ model PlatformUserMethodModel {
   deletedAt DateTime?
 }
 
-// 플랫폼 사용자 세션
-model PlatformUserSessionModel {
-  platformUserSessionId String @id
+// 프렌차이즈 사용자 세션
+model FranchiseUserSessionModel {
+  franchiseUserSessionId String @id
 
-  platformUserId String
-  platformUser   PlatformUserModel @relation(fields: [platformUserId], references: [platformUserId])
-  userAgent      String
+  franchiseUserId String
+  franchiseUser   FranchiseUserModel @relation(fields: [franchiseUserId], references: [franchiseUserId])
+  userAgent       String
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 }
 
-// 플랫폼 로그 타입
-enum PlatformLogType {
+// 프렌차이즈 로그 타입
+enum FranchiseLogType {
   LOGIN
 
   USER_CREATE
   USER_MODIFY
   USER_DELETE
-
-  ACCESS_KEY_CREATE
-  ACCESS_KEY_MODIFY
-  ACCESS_KEY_DELETE
 }
 
-// 플랫폼 사용자 기록
-model PlatformLogModel {
-  platformUserLogId String @id @default(uuid())
+// 프렌차이즈 사용자 기록
+model FranchiseLogModel {
+  franchiseUserLogId String @id @default(uuid())
 
-  platformLogType PlatformLogType
+  franchiseLogType FranchiseLogType
 
-  platformId String
-  platform   PlatformModel @relation(fields: [platformId], references: [platformId])
+  franchiseId String
+  franchise   FranchiseModel @relation(fields: [franchiseId], references: [franchiseId])
 
-  platformUserId String?
-  platformUser   PlatformUserModel? @relation(fields: [platformUserId], references: [platformUserId])
-
-  platformAccessKeyId String?
-  platformAccessKey   PlatformAccessKeyModel? @relation(fields: [platformAccessKeyId], references: [platformAccessKeyId])
+  franchiseUserId String?
+  franchiseUser   FranchiseUserModel? @relation(fields: [franchiseUserId], references: [franchiseUserId])
 
   message String
 
@@ -117,28 +109,7 @@ model PlatformLogModel {
   deletedAt DateTime?
 }
 
-// 플랫폼 접근 키
-model PlatformAccessKeyModel {
-  isEnabled Boolean @default(true)
-
-  name                    String
-  platformAccessKeyId     String @id @default(uuid())
-  platformSecretAccessKey String @default(uuid())
-
-  platformId String
-  platform   PlatformModel @relation(fields: [platformId], references: [platformId])
-
-  permissionGroupId String
-  permissionGroup   PermissionGroupModel @relation(fields: [permissionGroupId], references: [permissionGroupId])
-
-  usedAt           DateTime?
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
-  deletedAt        DateTime?
-  PlatformLogModel PlatformLogModel[]
-}
-
-// 플랫폼 사용자/어세스 키 권한
+// 프렌차이즈 사용자/어세스 키 권한
 model PermissionModel {
   permissionId String @id
 
@@ -151,19 +122,18 @@ model PermissionModel {
   updatedAt DateTime @updatedAt
 }
 
-// 플랫폼 권한 그룹
+// 프렌차이즈 권한 그룹
 model PermissionGroupModel {
   permissionGroupId String @id @default(uuid())
 
   name        String
   description String @default("")
 
-  platformId  String?
-  platform    PlatformModel?    @relation(fields: [platformId], references: [platformId])
+  franchiseId String?
+  franchise   FranchiseModel?   @relation(fields: [franchiseId], references: [franchiseId])
   permissions PermissionModel[]
 
-  users      PlatformUserModel[]
-  accessKeys PlatformAccessKeyModel[]
+  users FranchiseUserModel[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
