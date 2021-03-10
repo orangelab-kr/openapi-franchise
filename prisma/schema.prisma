@@ -92,7 +92,7 @@ enum FranchiseLogType {
 
 // 프렌차이즈 사용자 기록
 model FranchiseLogModel {
-  franchiseUserLogId String @id @default(uuid())
+  franchiseLogId String @id @default(uuid())
 
   franchiseLogType FranchiseLogType
 

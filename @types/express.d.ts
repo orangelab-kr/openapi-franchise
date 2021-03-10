@@ -4,6 +4,8 @@ import 'express';
 declare global {
   namespace Express {
     interface Request {
+      franchise: FranchiseModel;
+      franchiseUser: FranchiseUserModel;
       internal: {
         sub: string;
         iss: string;
