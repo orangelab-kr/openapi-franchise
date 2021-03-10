@@ -1,3 +1,4 @@
+export * from './franchise';
 export * from './permissions';
 
 import { Joi, OPCODE } from '../../tools';
