@@ -3,6 +3,8 @@ import Wrapper, { Callback } from '../../../tools/wrapper';
 
 import Franchise from '../../../controllers/franchise';
 
+export { default as InternalFranchiseUserMiddleware } from './user';
+
 export default function InternalFranchiseMiddleware(): Callback {
   return Wrapper(async (req, res, next) => {
     const { franchiseId } = req.params;

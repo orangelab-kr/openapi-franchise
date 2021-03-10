@@ -7,15 +7,16 @@ import InternalFranchiseMiddleware from '../../../middlewares/internal/franchise
 import OPCODE from '../../../tools/opcode';
 import { Router } from 'express';
 import Wrapper from '../../../tools/wrapper';
+import getInternalFranchisesUsersRouter from './users';
 
 export default function getInternalFranchisesRouter(): Router {
   const router = Router();
 
-  // router.use(
-  //   '/:franchiseId/users',
-  //   InternalFranchiseMiddleware(),
-  //   getInternalFranchisesUsersRouter()
-  // );
+  router.use(
+    '/:franchiseId/users',
+    InternalFranchiseMiddleware(),
+    getInternalFranchisesUsersRouter()
+  );
 
   // router.use(
   //   '/:franchiseId/logs',
