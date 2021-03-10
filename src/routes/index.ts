@@ -23,6 +23,7 @@ export default function getRouter(): Application {
     Wrapper(async (_req, res) => {
       res.json({
         opcode: OPCODE.SUCCESS,
+        name: process.env.AWS_LAMBDA_FUNCTION_NAME,
         mode: process.env.NODE_ENV,
         cluster: hostname,
       });
