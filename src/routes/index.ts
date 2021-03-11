@@ -8,6 +8,7 @@ import Wrapper from '../tools/wrapper';
 import getAuthRouter from './auth';
 import getInternalRouter from './internal';
 import getLogsRouter from './logs';
+import getPermissionGroupsRouter from './permissionGroups';
 import getUserRouter from './users';
 import logger from '../tools/logger';
 import morgan from 'morgan';
@@ -27,6 +28,12 @@ export default function getRouter(): Application {
   router.use('/logs', FranchiseMiddleware(), getLogsRouter());
   router.use('/users', FranchiseMiddleware(), getUserRouter());
   router.use('/auth', getAuthRouter());
+  // router.use('/permissions', FranchiseMiddleware(), getPermissionRouter());
+  router.use(
+    '/permissionGroups',
+    FranchiseMiddleware(),
+    getPermissionGroupsRouter()
+  );
 
   router.get(
     '/',
