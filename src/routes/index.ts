@@ -1,11 +1,13 @@
 import express, { Application } from 'express';
 
+import { FranchiseMiddleware } from '../middlewares';
 import InternalError from '../tools/error';
 import InternalMiddleware from '../middlewares/internal';
 import OPCODE from '../tools/opcode';
 import Wrapper from '../tools/wrapper';
 import getAuthRouter from './auth';
 import getInternalRouter from './internal';
+import getLogsRouter from './logs';
 import logger from '../tools/logger';
 import morgan from 'morgan';
 import os from 'os';
@@ -21,6 +23,7 @@ export default function getRouter(): Application {
   router.use(express.json());
   router.use(express.urlencoded({ extended: true }));
   router.use('/internal', InternalMiddleware(), getInternalRouter());
+  router.use('/logs', FranchiseMiddleware(), getLogsRouter());
   router.use('/auth', getAuthRouter());
 
   router.get(
