@@ -6,7 +6,7 @@ import { User } from '../controllers';
 export default function FranchiseUserMiddleware(): Callback {
   return Wrapper(async (req, res, next) => {
     const {
-      franchise,
+      loggined: { franchise },
       params: { franchiseUserId },
     } = req;
 

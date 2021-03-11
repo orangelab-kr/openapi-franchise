@@ -20,7 +20,7 @@ export default class Log {
     const {
       franchise: { franchiseId },
       franchiseUser: { franchiseUserId },
-    } = req;
+    } = req.loggined;
 
     if (!franchiseId || !franchiseUserId) {
       throw new InternalError(

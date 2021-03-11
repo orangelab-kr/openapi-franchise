@@ -1,7 +1,6 @@
+import Session from '../controllers/session';
 import { InternalError, OPCODE } from '../tools';
 import Wrapper, { Callback } from '../tools/wrapper';
-
-import Session from '../controllers/session';
 
 export default function FranchiseMiddleware(): Callback {
   return Wrapper(async (req, res, next) => {
@@ -15,8 +14,10 @@ export default function FranchiseMiddleware(): Callback {
 
     const franchiseUserSessionId = headers.authorization.substr(7);
     const session = await Session.getUserSession(franchiseUserSessionId);
-    req.franchise = session.franchiseUser.franchise;
-    req.franchiseUser = session.franchiseUser;
+
+    req.loggined = <any>{};
+    req.loggined.franchise = session.franchiseUser.franchise;
+    req.loggined.franchiseUser = session.franchiseUser;
 
     next();
   });

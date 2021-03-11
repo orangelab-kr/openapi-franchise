@@ -12,7 +12,7 @@ export default function getAuthRouter(): Router {
     '/',
     FranchiseMiddleware(),
     Wrapper(async (req, res) => {
-      const { franchiseUser } = req;
+      const { franchiseUser } = req.loggined;
       res.json({
         opcode: OPCODE.SUCCESS,
         franchiseUser,
@@ -24,9 +24,9 @@ export default function getAuthRouter(): Router {
     '/',
     FranchiseMiddleware(),
     Wrapper(async (req, res) => {
-      const { body, franchiseUser } = req;
+      const { body, loggined } = req;
       delete body.permissionGroupId;
-      await User.modifyUser(franchiseUser, body);
+      await User.modifyUser(loggined.franchiseUser, body);
       res.json({ opcode: OPCODE.SUCCESS });
     })
   );
@@ -57,7 +57,7 @@ export default function getAuthRouter(): Router {
     '/',
     FranchiseMiddleware(),
     Wrapper(async (req, res) => {
-      await Session.revokeAllSession(req.franchiseUser);
+      await Session.revokeAllSession(req.loggined.franchiseUser);
       res.json({ opcode: OPCODE.SUCCESS });
     })
   );

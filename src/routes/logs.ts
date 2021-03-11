@@ -9,8 +9,12 @@ export default function getLogsRouter(): Router {
   router.get(
     '/',
     Wrapper(async (req, res) => {
-      const { query, franchise } = req;
-      const { total, franchiseLogs } = await Log.getLogs(query, franchise);
+      const { query, loggined } = req;
+      const { total, franchiseLogs } = await Log.getLogs(
+        query,
+        loggined.franchise
+      );
+
       res.json({ opcode: OPCODE.SUCCESS, franchiseLogs, total });
     })
   );
@@ -19,7 +23,7 @@ export default function getLogsRouter(): Router {
     '/:franchiseLogId',
     Wrapper(async (req, res) => {
       const {
-        franchise,
+        loggined: { franchise },
         params: { franchiseLogId },
       } = req;
 

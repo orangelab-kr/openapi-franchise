@@ -6,6 +6,10 @@ declare global {
     interface Request {
       franchise: FranchiseModel;
       franchiseUser: FranchiseUserModel;
+      loggined: {
+        franchise: FranchiseModel;
+        franchiseUser: FranchiseUserModel;
+      };
       internal: {
         sub: string;
         iss: string;

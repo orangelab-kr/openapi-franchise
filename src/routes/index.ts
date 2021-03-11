@@ -8,6 +8,7 @@ import Wrapper from '../tools/wrapper';
 import getAuthRouter from './auth';
 import getInternalRouter from './internal';
 import getLogsRouter from './logs';
+import getUserRouter from './users';
 import logger from '../tools/logger';
 import morgan from 'morgan';
 import os from 'os';
@@ -24,6 +25,7 @@ export default function getRouter(): Application {
   router.use(express.urlencoded({ extended: true }));
   router.use('/internal', InternalMiddleware(), getInternalRouter());
   router.use('/logs', FranchiseMiddleware(), getLogsRouter());
+  router.use('/users', FranchiseMiddleware(), getUserRouter());
   router.use('/auth', getAuthRouter());
 
   router.get(
