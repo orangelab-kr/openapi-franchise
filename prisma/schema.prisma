@@ -74,7 +74,7 @@ model FranchiseUserSessionModel {
 
   franchiseUserId String
   franchiseUser   FranchiseUserModel @relation(fields: [franchiseUserId], references: [franchiseUserId])
-  userAgent       String
+  userAgent       String?
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
