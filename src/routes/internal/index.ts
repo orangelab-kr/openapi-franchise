@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { getInternalAuthorizeRouter } from './authorize';
 import getInternalFranchisesRouter from './franchises';
 import getInternalLogsRouter from './logs';
 import getInternalPermissionGroupsRouter from './permissionGroups';
@@ -10,6 +11,7 @@ export default function getInternalRouter(): Router {
   router.use('/franchises', getInternalFranchisesRouter());
   router.use('/permissions', getInternalPermissionsRouter());
   router.use('/permissionGroups', getInternalPermissionGroupsRouter());
+  router.use('/authorize', getInternalAuthorizeRouter());
   router.use('/logs', getInternalLogsRouter());
 
   return router;

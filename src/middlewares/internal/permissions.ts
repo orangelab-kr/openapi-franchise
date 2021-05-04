@@ -30,6 +30,8 @@ export enum PERMISSION {
 
   LOGS_LIST,
   LOGS_VIEW,
+
+  AUTHORIZE_USER,
 }
 
 export default function InternalPermissionMiddleware(
