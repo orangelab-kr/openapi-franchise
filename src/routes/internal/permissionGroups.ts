@@ -1,11 +1,13 @@
-import InternalPermissionMiddleware from '../../middlewares/internal/permissions';
-import OPCODE from '../../tools/opcode';
-import { PERMISSION } from '../../middlewares/internal';
-import PermissionGroup from '../../controllers/permissionGroup';
 import { Router } from 'express';
-import Wrapper from '../../tools/wrapper';
+import {
+  InternalPermissionMiddleware,
+  OPCODE,
+  PERMISSION,
+  PermissionGroup,
+  Wrapper,
+} from '../..';
 
-export default function getInternalPermissionGroupsRouter(): Router {
+export function getInternalPermissionGroupsRouter(): Router {
   const router = Router();
 
   router.get(

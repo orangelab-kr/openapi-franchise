@@ -3,7 +3,7 @@ import { FranchiseModel, Prisma } from '@prisma/client';
 
 const { prisma } = Database;
 
-export default class Franchise {
+export class Franchise {
   /** 프렌차이즈를 생성합니다. */
   public static async createFranchise(props: {
     name: string;

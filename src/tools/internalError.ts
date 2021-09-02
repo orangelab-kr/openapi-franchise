@@ -1,11 +1,9 @@
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
-
 import { Application } from 'express';
-import { OPCODE } from '.';
-import logger from './logger';
+import { logger, OPCODE } from '.';
 
-export default class InternalError extends Error {
+export class InternalError extends Error {
   public name = 'InternalError';
 
   public constructor(

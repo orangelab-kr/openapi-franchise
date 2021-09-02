@@ -1,8 +1,6 @@
-import Session from '../controllers/session';
-import { InternalError, OPCODE } from '../tools';
-import Wrapper, { Callback } from '../tools/wrapper';
+import { Callback, InternalError, OPCODE, Session, Wrapper } from '..';
 
-export default function FranchiseMiddleware(): Callback {
+export function FranchiseMiddleware(): Callback {
   return Wrapper(async (req, res, next) => {
     const { headers } = req;
     if (!headers.authorization) {

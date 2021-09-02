@@ -1,14 +1,11 @@
+import jwt from 'jsonwebtoken';
+import moment from 'moment';
+import { Callback, InternalError, Joi, logger, OPCODE, Wrapper } from '../..';
+
 export * from './franchise';
 export * from './permissions';
 
-import jwt from 'jsonwebtoken';
-import moment from 'moment';
-import { Joi, OPCODE } from '../../tools';
-import InternalError from '../../tools/error';
-import logger from '../../tools/logger';
-import Wrapper, { Callback } from '../../tools/wrapper';
-
-export default function InternalMiddleware(): Callback {
+export function InternalMiddleware(): Callback {
   return Wrapper(async (req, res, next) => {
     const { headers, query } = req;
     const token = headers.authorization
@@ -58,7 +55,7 @@ export default function InternalMiddleware(): Callback {
         `[Internal] [${payload.iss}] ${payload.aud} - ${req.method} ${req.originalUrl}`
       );
     } catch (err) {
-      if (process.env.NODE_ENV === 'dev') {
+      if (process.env.NODE_ENV !== 'prod') {
         logger.error(err.message);
         logger.error(err.stack);
       }

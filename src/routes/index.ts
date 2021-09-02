@@ -1,34 +1,28 @@
-import express, { Application } from 'express';
+import { Router } from 'express';
+import {
+  clusterInfo,
+  FranchiseMiddleware,
+  getAuthRouter,
+  getInternalRouter,
+  getLogsRouter,
+  getPermissionGroupsRouter,
+  getPermissionRouter,
+  getUserRouter,
+  InternalMiddleware,
+  OPCODE,
+  Wrapper,
+} from '..';
 
-import { FranchiseMiddleware } from '../middlewares';
-import InternalError from '../tools/error';
-import InternalMiddleware from '../middlewares/internal';
-import OPCODE from '../tools/opcode';
-import Wrapper from '../tools/wrapper';
-import cors from 'cors';
-import getAuthRouter from './auth';
-import getInternalRouter from './internal';
-import getLogsRouter from './logs';
-import getPermissionGroupsRouter from './permissionGroups';
-import getPermissionRouter from './permissions';
-import getUserRouter from './users';
-import logger from '../tools/logger';
-import morgan from 'morgan';
-import os from 'os';
+export * from './auth';
+export * from './internal';
+export * from './logs';
+export * from './permissionGroups';
+export * from './permissions';
+export * from './users';
 
-export default function getRouter(): Application {
-  const router = express();
-  InternalError.registerSentry(router);
+export function getRouter(): Router {
+  const router = Router();
 
-  const hostname = os.hostname();
-  const logging = morgan('common', {
-    stream: { write: (str: string) => logger.info(`${str.trim()}`) },
-  });
-
-  router.use(cors());
-  router.use(logging);
-  router.use(express.json());
-  router.use(express.urlencoded({ extended: true }));
   router.use('/internal', InternalMiddleware(), getInternalRouter());
   router.use('/logs', FranchiseMiddleware(), getLogsRouter());
   router.use('/users', FranchiseMiddleware(), getUserRouter());
@@ -45,17 +39,8 @@ export default function getRouter(): Application {
     Wrapper(async (_req, res) => {
       res.json({
         opcode: OPCODE.SUCCESS,
-        name: process.env.AWS_LAMBDA_FUNCTION_NAME,
-        mode: process.env.NODE_ENV,
-        cluster: hostname,
+        ...clusterInfo,
       });
-    })
-  );
-
-  router.all(
-    '*',
-    Wrapper(async () => {
-      throw new InternalError('Invalid API', 404);
     })
   );
 

@@ -1,4 +1,3 @@
-import { Database, InternalError, Joi, OPCODE, PATTERN } from '../tools';
 import {
   FranchiseLogType,
   FranchiseModel,
@@ -9,14 +8,13 @@ import {
   PermissionGroupModel,
   PermissionModel,
 } from '@prisma/client';
-
-import Log from './log';
-import { User } from '.';
 import { compareSync } from 'bcryptjs';
 import { randomBytes } from 'crypto';
+import { InternalError, Joi, Log, OPCODE, PATTERN, User } from '..';
+import { Database } from '../tools';
 
 const { prisma } = Database;
-export default class Session {
+export class Session {
   /** 해당 세션 아이디로 인증합니다. */
   public static async authorizeWithSessionId(props: {
     sessionId: string;

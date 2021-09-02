@@ -6,18 +6,13 @@ import {
   PermissionModel,
   Prisma,
 } from '@prisma/client';
-
-import Database from '../tools/database';
-import InternalError from '../tools/error';
-import Joi from '../tools/joi';
-import { OPCODE } from '../tools';
-import PATTERN from '../tools/pattern';
-import PermissionGroup from './permissionGroup';
 import { hashSync } from 'bcryptjs';
+import { InternalError, Joi, OPCODE, PATTERN, PermissionGroup } from '..';
+import { Database } from '../tools';
 
 const { prisma } = Database;
 
-export default class User {
+export class User {
   public static hasPermissions(
     user: FranchiseUserModel & {
       franchise: FranchiseModel;

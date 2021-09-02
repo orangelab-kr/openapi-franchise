@@ -1,12 +1,8 @@
-import { Log, User } from '../controllers';
-
 import { FranchiseLogType } from '@prisma/client';
-import { FranchiseUserMiddleware } from '../middlewares';
-import { OPCODE } from '../tools';
 import { Router } from 'express';
-import Wrapper from '../tools/wrapper';
+import { FranchiseUserMiddleware, Log, OPCODE, User, Wrapper } from '..';
 
-export default function getUserRouter(): Router {
+export function getUserRouter(): Router {
   const router = Router();
 
   router.get(

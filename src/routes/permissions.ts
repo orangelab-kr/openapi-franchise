@@ -1,9 +1,7 @@
-import { OPCODE, Wrapper } from '../tools';
-
-import { Permission } from '../controllers';
 import { Router } from 'express';
+import { OPCODE, Permission, Wrapper } from '..';
 
-export default function getPermissionRouter(): Router {
+export function getPermissionRouter(): Router {
   const router = Router();
 
   router.get(

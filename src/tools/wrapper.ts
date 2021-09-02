@@ -1,10 +1,7 @@
 import * as Sentry from '@sentry/node';
-
 import { NextFunction, Request, Response } from 'express';
-
-import OPCODE from './opcode';
 import { ValidationError } from 'joi';
-import logger from './logger';
+import { logger, OPCODE } from '..';
 
 export type Callback = (
   req: Request,
@@ -12,12 +9,12 @@ export type Callback = (
   next: NextFunction
 ) => Promise<unknown>;
 
-export default function Wrapper(cb: Callback): Callback {
+export function Wrapper(cb: Callback): Callback {
   return async function (req: Request, res: Response, next: NextFunction) {
     try {
       return await cb(req, res, next);
     } catch (err) {
-      if (process.env.NODE_ENV === 'dev') {
+      if (process.env.NODE_ENV !== 'prod') {
         logger.error(err.message);
         logger.error(err.stack);
       }
@@ -40,6 +37,7 @@ export default function Wrapper(cb: Callback): Callback {
         details = err.details;
       }
 
+      if (res.headersSent) return;
       res.status(status).json({
         opcode,
         eventId,

@@ -1,10 +1,11 @@
-import InternalPermissionMiddleware, {
-  PERMISSION,
-} from '../../middlewares/internal/permissions';
-import { OPCODE, Wrapper } from '../../tools';
-
 import { Router } from 'express';
-import Session from '../../controllers/session';
+import {
+  InternalPermissionMiddleware,
+  OPCODE,
+  PERMISSION,
+  Session,
+  Wrapper,
+} from '../..';
 
 export function getInternalAuthorizeRouter(): Router {
   const router = Router();

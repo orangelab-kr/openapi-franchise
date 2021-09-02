@@ -1,11 +1,8 @@
-import { InternalError, OPCODE } from '../../../tools';
-import Wrapper, { Callback } from '../../../tools/wrapper';
+import { Callback, Franchise, InternalError, OPCODE, Wrapper } from '../../..';
 
-import Franchise from '../../../controllers/franchise';
+export * from './user';
 
-export { default as InternalFranchiseUserMiddleware } from './user';
-
-export default function InternalFranchiseMiddleware(): Callback {
+export function InternalFranchiseMiddleware(): Callback {
   return Wrapper(async (req, res, next) => {
     const { franchiseId } = req.params;
     if (!franchiseId) {

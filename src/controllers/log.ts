@@ -10,7 +10,7 @@ import {
 import { Request } from 'express';
 
 const { prisma } = Database;
-export default class Log {
+export class Log {
   /** HTTP 요청을 기록합니다. */
   public static async createRequestLog(
     req: Request,

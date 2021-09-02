@@ -1,11 +1,7 @@
-import { FranchiseMiddleware } from '../middlewares';
-import { OPCODE } from '../tools';
 import { Router } from 'express';
-import Session from '../controllers/session';
-import { User } from '../controllers';
-import Wrapper from '../tools/wrapper';
+import { FranchiseMiddleware, OPCODE, Session, User, Wrapper } from '..';
 
-export default function getAuthRouter(): Router {
+export function getAuthRouter(): Router {
   const router = Router();
 
   router.get(

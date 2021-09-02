@@ -1,3 +1,5 @@
-export { default as FranchiseMiddleware } from './franchise';
-export { default as InternalMiddleware } from './internal';
-export { default as FranchiseUserMiddleware } from './user';
+export * from './franchise';
+export * from './internal';
+export * from './logger';
+export * from './promise';
+export * from './user';

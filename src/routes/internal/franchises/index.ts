@@ -1,16 +1,19 @@
-import InternalPermissionMiddleware, {
-  PERMISSION,
-} from '../../../middlewares/internal/permissions';
-
-import Franchise from '../../../controllers/franchise';
-import InternalFranchiseMiddleware from '../../../middlewares/internal/franchise';
-import OPCODE from '../../../tools/opcode';
 import { Router } from 'express';
-import Wrapper from '../../../tools/wrapper';
-import getInternalFranchisesLogsRouter from './logs';
-import getInternalFranchisesUsersRouter from './users';
+import {
+  Franchise,
+  getInternalFranchisesLogsRouter,
+  getInternalFranchisesUsersRouter,
+  InternalFranchiseMiddleware,
+  InternalPermissionMiddleware,
+  OPCODE,
+  PERMISSION,
+  Wrapper,
+} from '../../..';
 
-export default function getInternalFranchisesRouter(): Router {
+export * from './logs';
+export * from './users';
+
+export function getInternalFranchisesRouter(): Router {
   const router = Router();
 
   router.use(
