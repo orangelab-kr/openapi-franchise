@@ -13,7 +13,7 @@ export function getInternalPermissionsRouter(): Router {
   router.get(
     '/',
     InternalPermissionMiddleware(PERMISSION.PERMISSIONS_LIST),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { total, permissions } = await Permission.getPermissions(req.query);
       throw RESULT.SUCCESS({ details: { permissions, total } });
     })
@@ -22,7 +22,7 @@ export function getInternalPermissionsRouter(): Router {
   router.get(
     '/:permissionId',
     InternalPermissionMiddleware(PERMISSION.PERMISSIONS_VIEW),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { permissionId } = req.params;
       const permission = await Permission.getPermissionOrThrow(permissionId);
       throw RESULT.SUCCESS({ details: { permission } });
@@ -32,7 +32,7 @@ export function getInternalPermissionsRouter(): Router {
   router.post(
     '/',
     InternalPermissionMiddleware(PERMISSION.PERMISSIONS_CREATE),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { permissionId } = await Permission.createPermission(req.body);
       throw RESULT.SUCCESS({ details: { permissionId } });
     })
@@ -41,7 +41,7 @@ export function getInternalPermissionsRouter(): Router {
   router.post(
     '/:permissionId',
     InternalPermissionMiddleware(PERMISSION.PERMISSIONS_MODIFY),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { body, params } = req;
       await Permission.modifyPermission(params.permissionId, body);
       throw RESULT.SUCCESS();
@@ -51,7 +51,7 @@ export function getInternalPermissionsRouter(): Router {
   router.delete(
     '/:permissionId',
     InternalPermissionMiddleware(PERMISSION.PERMISSIONS_DELETE),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { permissionId } = req.params;
       await Permission.deletePermission(permissionId);
       throw RESULT.SUCCESS();

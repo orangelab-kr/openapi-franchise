@@ -13,7 +13,7 @@ export function getInternalLogsRouter(): Router {
   router.get(
     '/',
     InternalPermissionMiddleware(PERMISSION.LOGS_LIST),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { query } = req;
       const { total, franchiseLogs } = await Log.getLogs(query);
       throw RESULT.SUCCESS({ details: { franchiseLogs, total } });
@@ -23,7 +23,7 @@ export function getInternalLogsRouter(): Router {
   router.get(
     '/:franchiseLogId',
     InternalPermissionMiddleware(PERMISSION.LOGS_VIEW),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const {
         params: { franchiseLogId },
       } = req;

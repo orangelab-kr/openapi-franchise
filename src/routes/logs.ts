@@ -6,7 +6,7 @@ export function getLogsRouter(): Router {
 
   router.get(
     '/',
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { query, loggined } = req;
       const { total, franchiseLogs } = await Log.getLogs(
         query,
@@ -19,7 +19,7 @@ export function getLogsRouter(): Router {
 
   router.get(
     '/:franchiseLogId',
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const {
         loggined: { franchise },
         params: { franchiseLogId },

@@ -7,7 +7,7 @@ export function getAuthRouter(): Router {
   router.get(
     '/',
     FranchiseMiddleware(),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { franchiseUser } = req.loggined;
       throw RESULT.SUCCESS({ details: { franchiseUser } });
     })
@@ -16,7 +16,7 @@ export function getAuthRouter(): Router {
   router.post(
     '/',
     FranchiseMiddleware(),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { body, loggined } = req;
       delete body.permissionGroupId;
       await User.modifyUser(loggined.franchiseUser, body);
@@ -26,7 +26,7 @@ export function getAuthRouter(): Router {
 
   router.post(
     '/email',
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { headers, body } = req;
       const userAgent = headers['user-agent'];
       const franchiseUser = await Session.loginUserByEmail(body);
@@ -37,7 +37,7 @@ export function getAuthRouter(): Router {
 
   router.post(
     '/phone',
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { headers, body } = req;
       const userAgent = headers['user-agent'];
       const franchiseUser = await Session.loginUserByPhone(body);
@@ -49,7 +49,7 @@ export function getAuthRouter(): Router {
   router.delete(
     '/',
     FranchiseMiddleware(),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       await Session.revokeAllSession(req.loggined.franchiseUser);
       throw RESULT.SUCCESS();
     })

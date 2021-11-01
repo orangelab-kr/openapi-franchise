@@ -13,7 +13,7 @@ export function getInternalAuthorizeRouter(): Router {
   router.post(
     '/user',
     InternalPermissionMiddleware(PERMISSION.AUTHORIZE_USER),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const franchiseUser = await Session.authorizeWithSessionId(req.body);
       throw RESULT.SUCCESS({ details: { franchiseUser } });
     })

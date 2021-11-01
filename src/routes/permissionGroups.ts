@@ -7,7 +7,7 @@ export function getPermissionGroupsRouter(): Router {
 
   router.get(
     '/',
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { query, loggined } = req;
       const { total, permissionGroups } =
         await PermissionGroup.getPermissionGroups(query, loggined.franchise);
@@ -17,7 +17,7 @@ export function getPermissionGroupsRouter(): Router {
 
   router.get(
     '/:permissionGroupId',
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const {
         loggined: { franchise },
         params: { permissionGroupId },
@@ -33,7 +33,7 @@ export function getPermissionGroupsRouter(): Router {
 
   router.post(
     '/',
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { loggined, body } = req;
       const { permissionGroupId } = await PermissionGroup.createPermissionGroup(
         body,
@@ -52,7 +52,7 @@ export function getPermissionGroupsRouter(): Router {
 
   router.post(
     '/:permissionGroupId',
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const {
         body,
         loggined: { franchise },
@@ -76,7 +76,7 @@ export function getPermissionGroupsRouter(): Router {
 
   router.delete(
     '/:permissionGroupId',
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const {
         loggined: { franchise },
         params: { permissionGroupId },

@@ -13,7 +13,7 @@ export function getInternalFranchisesLogsRouter(): Router {
   router.get(
     '/',
     InternalPermissionMiddleware(PERMISSION.LOGS_LIST),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const {
         query,
         internal: { franchise },
@@ -27,7 +27,7 @@ export function getInternalFranchisesLogsRouter(): Router {
   router.get(
     '/:franchiseLogId',
     InternalPermissionMiddleware(PERMISSION.LOGS_VIEW),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const {
         internal: { franchise },
         params: { franchiseLogId },

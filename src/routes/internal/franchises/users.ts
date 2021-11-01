@@ -14,7 +14,7 @@ export function getInternalFranchisesUsersRouter(): Router {
   router.get(
     '/',
     InternalPermissionMiddleware(PERMISSION.USERS_LIST),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { internal, query } = req;
       const { franchiseUsers, total } = await User.getUsers(
         internal.franchise,
@@ -28,7 +28,7 @@ export function getInternalFranchisesUsersRouter(): Router {
   router.post(
     '/',
     InternalPermissionMiddleware(PERMISSION.USERS_CREATE),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { internal, body } = req;
       const { franchiseUserId } = await User.createUser(
         internal.franchise,
@@ -42,7 +42,7 @@ export function getInternalFranchisesUsersRouter(): Router {
     '/:franchiseUserId',
     InternalPermissionMiddleware(PERMISSION.USERS_VIEW),
     InternalFranchiseUserMiddleware(),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { franchiseUser } = req.internal;
       throw RESULT.SUCCESS({ details: { franchiseUser } });
     })
@@ -52,7 +52,7 @@ export function getInternalFranchisesUsersRouter(): Router {
     '/:franchiseUserId',
     InternalPermissionMiddleware(PERMISSION.USERS_MODIFY),
     InternalFranchiseUserMiddleware(),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { body, internal } = req;
       await User.modifyUser(internal.franchiseUser, body);
       throw RESULT.SUCCESS();
@@ -63,7 +63,7 @@ export function getInternalFranchisesUsersRouter(): Router {
     '/:franchiseUserId',
     InternalPermissionMiddleware(PERMISSION.USERS_DELETE),
     InternalFranchiseUserMiddleware(),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { franchise, franchiseUser } = req.internal;
       await User.deleteUser(franchise, franchiseUser);
       throw RESULT.SUCCESS();

@@ -7,7 +7,7 @@ export function getUserRouter(): Router {
 
   router.get(
     '/',
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { loggined, query } = req;
       const { total, franchiseUsers } = await User.getUsers(
         loggined.franchise,
@@ -21,7 +21,7 @@ export function getUserRouter(): Router {
   router.get(
     '/:franchiseUserId',
     FranchiseUserMiddleware(),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { franchiseUser } = req;
       throw RESULT.SUCCESS({ details: { franchiseUser } });
     })
@@ -29,7 +29,7 @@ export function getUserRouter(): Router {
 
   router.post(
     '/',
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { loggined, body } = req;
       const { franchiseUserId } = await User.createUser(
         loggined.franchise,
@@ -49,7 +49,7 @@ export function getUserRouter(): Router {
   router.post(
     '/:franchiseUserId',
     FranchiseUserMiddleware(),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { franchiseUser, body } = req;
       const { franchiseUserId } = franchiseUser;
       await User.modifyUser(franchiseUser, body);
@@ -66,7 +66,7 @@ export function getUserRouter(): Router {
   router.delete(
     '/:franchiseUserId',
     FranchiseUserMiddleware(),
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { loggined, franchiseUser } = req;
       const { franchiseUserId } = franchiseUser;
       await User.deleteUser(loggined.franchise, franchiseUser);

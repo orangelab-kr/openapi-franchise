@@ -6,7 +6,7 @@ export function getPermissionRouter(): Router {
 
   router.get(
     '/',
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { total, permissions } = await Permission.getPermissions(req.query);
       throw RESULT.SUCCESS({ details: { permissions, total } });
     })
@@ -14,7 +14,7 @@ export function getPermissionRouter(): Router {
 
   router.get(
     '/:permissionId',
-    Wrapper(async (req, res) => {
+    Wrapper(async (req) => {
       const { permissionId } = req.params;
       const permission = await Permission.getPermissionOrThrow(permissionId);
       throw RESULT.SUCCESS({ details: { permission } });
