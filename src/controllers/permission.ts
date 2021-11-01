@@ -1,5 +1,5 @@
 import { PermissionModel, Prisma } from '@prisma/client';
-import { InternalError, Joi, OPCODE, PATTERN, prisma } from '..';
+import { Joi, PATTERN, prisma, RESULT } from '..';
 
 export class Permission {
   /** 권한을 불러옵니다. 없을 경우 오류를 발생합니다. */
@@ -7,13 +7,7 @@ export class Permission {
     permissionId: string
   ): Promise<PermissionModel> {
     const permission = await Permission.getPermission(permissionId);
-    if (!permission) {
-      throw new InternalError(
-        `해당 권한을 찾을 수 없습니다.`,
-        OPCODE.NOT_FOUND
-      );
-    }
-
+    if (!permission) throw RESULT.CANNOT_FIND_PERMISSION();
     return permission;
   }
 
@@ -45,18 +39,10 @@ export class Permission {
     );
 
     const exists = await Permission.getPermission(permissionId);
-    if (exists) {
-      throw new InternalError(
-        '이미 존재하는 권한입니다.',
-        OPCODE.ALREADY_EXISTS
-      );
-    }
-
-    const permission = await prisma.permissionModel.create({
+    if (exists) throw RESULT.ALREADY_EXISTS_PERMISSION();
+    return prisma.permissionModel.create({
       data: { permissionId, name, description },
     });
-
-    return permission;
   }
 
   /** 권한 목록을 불러옵니다. */

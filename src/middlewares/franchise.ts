@@ -1,15 +1,9 @@
-import { Callback, InternalError, OPCODE, Session, Wrapper } from '..';
+import { RESULT, Session, Wrapper, WrapperCallback } from '..';
 
-export function FranchiseMiddleware(): Callback {
+export function FranchiseMiddleware(): WrapperCallback {
   return Wrapper(async (req, res, next) => {
     const { headers } = req;
-    if (!headers.authorization) {
-      throw new InternalError(
-        '로그인이 필요한 서비스입니다.',
-        OPCODE.REQUIRED_LOGIN
-      );
-    }
-
+    if (!headers.authorization) throw RESULT.REQUIRED_LOGIN();
     const franchiseUserSessionId = headers.authorization.substr(7);
     const session = await Session.getUserSession(franchiseUserSessionId);
 

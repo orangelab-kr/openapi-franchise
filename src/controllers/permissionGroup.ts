@@ -1,5 +1,5 @@
 import { FranchiseModel, PermissionGroupModel, Prisma } from '@prisma/client';
-import { InternalError, Joi, OPCODE, PATTERN, prisma } from '..';
+import { Joi, PATTERN, prisma, RESULT } from '..';
 
 export class PermissionGroup {
   /** 권한 그룹을 불러옵니다. 없으면 오류를 발생합니다. */
@@ -12,13 +12,7 @@ export class PermissionGroup {
       franchise
     );
 
-    if (!permissionGroup) {
-      throw new InternalError(
-        '해당 권한 그룹을 찾을 수 없습니다.',
-        OPCODE.NOT_FOUND
-      );
-    }
-
+    if (!permissionGroup) throw RESULT.CANNOT_FIND_PERMISSION_GROUP();
     return permissionGroup;
   }
 
@@ -124,11 +118,7 @@ export class PermissionGroup {
       data.franchise = { connect: { franchiseId } };
     }
 
-    const permissionGroup = await prisma.permissionGroupModel.create({
-      data,
-    });
-
-    return permissionGroup;
+    return prisma.permissionGroupModel.create({ data });
   }
 
   /** 권한 그룹을 수정합니다. */
@@ -184,21 +174,10 @@ export class PermissionGroup {
 
     const { findFirst, deleteMany } = prisma.permissionGroupModel;
     const permissionGroup = await findFirst({ where, include });
-
-    if (!permissionGroup) {
-      throw new InternalError(
-        '해당 권한 그룹을 찾을 수 없습니다.',
-        OPCODE.NOT_FOUND
-      );
-    }
-
+    if (!permissionGroup) throw RESULT.CANNOT_FIND_PERMISSION_GROUP();
     const { users } = permissionGroup;
     if (users.length > 0) {
-      throw new InternalError(
-        `해당 권한 그룹을 사용하는 사용자가 있습니다.`,
-        OPCODE.ERROR,
-        { users }
-      );
+      throw RESULT.USING_PERMISSION_GROUP({ args: [`${users.length}`] });
     }
 
     await deleteMany({ where: { permissionGroupId } });

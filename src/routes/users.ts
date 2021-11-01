@@ -1,6 +1,6 @@
 import { FranchiseLogType } from '@prisma/client';
 import { Router } from 'express';
-import { FranchiseUserMiddleware, Log, OPCODE, User, Wrapper } from '..';
+import { FranchiseUserMiddleware, Log, RESULT, User, Wrapper } from '..';
 
 export function getUserRouter(): Router {
   const router = Router();
@@ -14,7 +14,7 @@ export function getUserRouter(): Router {
         query
       );
 
-      res.json({ opcode: OPCODE.SUCCESS, franchiseUsers, total });
+      throw RESULT.SUCCESS({ details: { franchiseUsers, total } });
     })
   );
 
@@ -23,7 +23,7 @@ export function getUserRouter(): Router {
     FranchiseUserMiddleware(),
     Wrapper(async (req, res) => {
       const { franchiseUser } = req;
-      res.json({ opcode: OPCODE.SUCCESS, franchiseUser });
+      throw RESULT.SUCCESS({ details: { franchiseUser } });
     })
   );
 
@@ -42,7 +42,7 @@ export function getUserRouter(): Router {
         `${franchiseUserId} 사용자를 추가하였습니다.`
       );
 
-      res.json({ opcode: OPCODE.SUCCESS, franchiseUserId });
+      throw RESULT.SUCCESS({ details: { franchiseUserId } });
     })
   );
 
@@ -59,7 +59,7 @@ export function getUserRouter(): Router {
         `${franchiseUserId} 사용자를 수정하였습니다.`
       );
 
-      res.json({ opcode: OPCODE.SUCCESS });
+      throw RESULT.SUCCESS();
     })
   );
 
@@ -76,7 +76,7 @@ export function getUserRouter(): Router {
         `${franchiseUserId} 사용자를 삭제하였습니다.`
       );
 
-      res.json({ opcode: OPCODE.SUCCESS });
+      throw RESULT.SUCCESS();
     })
   );
 

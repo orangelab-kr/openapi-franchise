@@ -1,22 +1,14 @@
-import { Callback, InternalError, OPCODE, User, Wrapper } from '..';
+import { RESULT, User, Wrapper, WrapperCallback } from '..';
 
-export function FranchiseUserMiddleware(): Callback {
+export function FranchiseUserMiddleware(): WrapperCallback {
   return Wrapper(async (req, res, next) => {
     const {
       loggined: { franchise },
       params: { franchiseUserId },
     } = req;
 
-    if (!franchise || !franchiseUserId) {
-      throw new InternalError(
-        '해당 사용자를 찾을 수 없습니다.',
-        OPCODE.NOT_FOUND
-      );
-    }
-
-    const franchiseUser = await User.getUserOrThrow(franchise, franchiseUserId);
-    req.franchiseUser = franchiseUser;
-
+    if (!franchise || !franchiseUserId) throw RESULT.CANNOT_FIND_USER();
+    req.franchiseUser = await User.getUserOrThrow(franchise, franchiseUserId);
     next();
   });
 }

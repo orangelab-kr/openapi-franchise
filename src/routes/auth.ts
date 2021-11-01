@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { FranchiseMiddleware, OPCODE, Session, User, Wrapper } from '..';
+import { FranchiseMiddleware, RESULT, Session, User, Wrapper } from '..';
 
 export function getAuthRouter(): Router {
   const router = Router();
@@ -9,10 +9,7 @@ export function getAuthRouter(): Router {
     FranchiseMiddleware(),
     Wrapper(async (req, res) => {
       const { franchiseUser } = req.loggined;
-      res.json({
-        opcode: OPCODE.SUCCESS,
-        franchiseUser,
-      });
+      throw RESULT.SUCCESS({ details: { franchiseUser } });
     })
   );
 
@@ -23,7 +20,7 @@ export function getAuthRouter(): Router {
       const { body, loggined } = req;
       delete body.permissionGroupId;
       await User.modifyUser(loggined.franchiseUser, body);
-      res.json({ opcode: OPCODE.SUCCESS });
+      throw RESULT.SUCCESS();
     })
   );
 
@@ -34,7 +31,7 @@ export function getAuthRouter(): Router {
       const userAgent = headers['user-agent'];
       const franchiseUser = await Session.loginUserByEmail(body);
       const sessionId = await Session.createSession(franchiseUser, userAgent);
-      res.json({ opcode: OPCODE.SUCCESS, sessionId });
+      throw RESULT.SUCCESS({ details: { sessionId } });
     })
   );
 
@@ -45,7 +42,7 @@ export function getAuthRouter(): Router {
       const userAgent = headers['user-agent'];
       const franchiseUser = await Session.loginUserByPhone(body);
       const sessionId = await Session.createSession(franchiseUser, userAgent);
-      res.json({ opcode: OPCODE.SUCCESS, sessionId });
+      throw RESULT.SUCCESS({ details: { sessionId } });
     })
   );
 
@@ -54,7 +51,7 @@ export function getAuthRouter(): Router {
     FranchiseMiddleware(),
     Wrapper(async (req, res) => {
       await Session.revokeAllSession(req.loggined.franchiseUser);
-      res.json({ opcode: OPCODE.SUCCESS });
+      throw RESULT.SUCCESS();
     })
   );
 

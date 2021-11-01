@@ -1,31 +1,20 @@
 import jwt from 'jsonwebtoken';
 import moment from 'moment';
-import { Callback, InternalError, Joi, logger, OPCODE, Wrapper } from '../..';
+import { Joi, logger, RESULT, Wrapper, WrapperCallback } from '../..';
 
 export * from './franchise';
 export * from './permissions';
 
-export function InternalMiddleware(): Callback {
+export function InternalMiddleware(): WrapperCallback {
   return Wrapper(async (req, res, next) => {
     const { headers, query } = req;
     const token = headers.authorization
       ? headers.authorization.substr(7)
       : query.token;
 
-    if (typeof token !== 'string') {
-      throw new InternalError(
-        '인증이 필요한 서비스입니다.',
-        OPCODE.REQUIRED_INTERNAL_LOGIN
-      );
-    }
-
+    if (typeof token !== 'string') throw RESULT.REQUIRED_ACCESS_KEY();
     const key = process.env.HIKICK_OPENAPI_FRANCHISE_KEY;
-    if (!key || !token) {
-      throw new InternalError(
-        '인증이 필요한 서비스입니다.',
-        OPCODE.REQUIRED_INTERNAL_LOGIN
-      );
-    }
+    if (!key || !token) throw RESULT.REQUIRED_ACCESS_KEY();
 
     try {
       const data = jwt.verify(token, key);
@@ -50,7 +39,7 @@ export function InternalMiddleware(): Callback {
 
       req.internal = payload;
       req.internal.prs = prs;
-      if (exp.diff(iat, 'hours') > 6) throw Error();
+      if (exp.diff(iat, 'hours') > 6) throw RESULT.EXPIRED_ACCESS_KEY();
       logger.info(
         `Internal / ${payload.aud}(${payload.iss}) - ${req.method} ${req.originalUrl}`
       );
@@ -60,12 +49,9 @@ export function InternalMiddleware(): Callback {
         logger.error(err.stack);
       }
 
-      throw new InternalError(
-        '인증이 필요한 서비스입니다.',
-        OPCODE.REQUIRED_INTERNAL_LOGIN
-      );
+      throw RESULT.REQUIRED_ACCESS_KEY();
     }
 
-    await next();
+    next();
   });
 }

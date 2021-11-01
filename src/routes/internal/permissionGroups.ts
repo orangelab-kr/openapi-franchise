@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import {
   InternalPermissionMiddleware,
-  OPCODE,
   PERMISSION,
   PermissionGroup,
-  Wrapper,
+  RESULT,
+  Wrapper
 } from '../..';
 
 export function getInternalPermissionGroupsRouter(): Router {
@@ -14,11 +14,9 @@ export function getInternalPermissionGroupsRouter(): Router {
     '/',
     InternalPermissionMiddleware(PERMISSION.PERMISSION_GROUPS_LIST),
     Wrapper(async (req, res) => {
-      const {
-        total,
-        permissionGroups,
-      } = await PermissionGroup.getPermissionGroups(req.query);
-      res.json({ opcode: OPCODE.SUCCESS, permissionGroups, total });
+      const { total, permissionGroups } =
+        await PermissionGroup.getPermissionGroups(req.query);
+      throw RESULT.SUCCESS({ details: { permissionGroups, total } });
     })
   );
 
@@ -31,7 +29,7 @@ export function getInternalPermissionGroupsRouter(): Router {
         permissionGroupId
       );
 
-      res.json({ opcode: OPCODE.SUCCESS, permissionGroup });
+      throw RESULT.SUCCESS({ details: { permissionGroup } });
     })
   );
 
@@ -43,7 +41,7 @@ export function getInternalPermissionGroupsRouter(): Router {
         req.body
       );
 
-      res.json({ opcode: OPCODE.SUCCESS, permissionGroupId });
+      throw RESULT.SUCCESS({ details: { permissionGroupId } });
     })
   );
 
@@ -57,7 +55,7 @@ export function getInternalPermissionGroupsRouter(): Router {
         body
       );
 
-      res.json({ opcode: OPCODE.SUCCESS });
+      throw RESULT.SUCCESS();
     })
   );
 
@@ -67,7 +65,7 @@ export function getInternalPermissionGroupsRouter(): Router {
     Wrapper(async (req, res) => {
       const { permissionGroupId } = req.params;
       await PermissionGroup.deletePermissionGroup(permissionGroupId);
-      res.json({ opcode: OPCODE.SUCCESS });
+      throw RESULT.SUCCESS();
     })
   );
 

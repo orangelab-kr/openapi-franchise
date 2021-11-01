@@ -5,8 +5,8 @@ import {
   getInternalFranchisesUsersRouter,
   InternalFranchiseMiddleware,
   InternalPermissionMiddleware,
-  OPCODE,
   PERMISSION,
+  RESULT,
   Wrapper,
 } from '../../..';
 
@@ -33,7 +33,7 @@ export function getInternalFranchisesRouter(): Router {
     InternalPermissionMiddleware(PERMISSION.FRANCHISES_LIST),
     Wrapper(async (req, res) => {
       const { franchises, total } = await Franchise.getFranchises(req.query);
-      res.json({ opcode: OPCODE.SUCCESS, franchises, total });
+      throw RESULT.SUCCESS({ details: { franchises, total } });
     })
   );
 
@@ -42,7 +42,7 @@ export function getInternalFranchisesRouter(): Router {
     InternalPermissionMiddleware(PERMISSION.FRANCHISES_CREATE),
     Wrapper(async (req, res) => {
       const { franchiseId } = await Franchise.createFranchise(req.body);
-      res.json({ opcode: OPCODE.SUCCESS, franchiseId });
+      throw RESULT.SUCCESS({ details: { franchiseId } });
     })
   );
 
@@ -52,7 +52,7 @@ export function getInternalFranchisesRouter(): Router {
     InternalFranchiseMiddleware(),
     Wrapper(async (req, res) => {
       const { franchise } = req.internal;
-      res.json({ opcode: OPCODE.SUCCESS, franchise });
+      throw RESULT.SUCCESS({ details: { franchise } });
     })
   );
 
@@ -63,7 +63,7 @@ export function getInternalFranchisesRouter(): Router {
     Wrapper(async (req, res) => {
       const { body, internal } = req;
       await Franchise.modifyFranchise(internal.franchise, body);
-      res.json({ opcode: OPCODE.SUCCESS });
+      throw RESULT.SUCCESS();
     })
   );
 
@@ -74,7 +74,7 @@ export function getInternalFranchisesRouter(): Router {
     Wrapper(async (req, res) => {
       const { franchise } = req.internal;
       await Franchise.deleteFranchise(franchise);
-      res.json({ opcode: OPCODE.SUCCESS });
+      throw RESULT.SUCCESS();
     })
   );
 

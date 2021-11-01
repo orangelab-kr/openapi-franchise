@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import {
   InternalPermissionMiddleware,
-  OPCODE,
   PERMISSION,
+  RESULT,
   Session,
   Wrapper,
 } from '../..';
@@ -15,7 +15,7 @@ export function getInternalAuthorizeRouter(): Router {
     InternalPermissionMiddleware(PERMISSION.AUTHORIZE_USER),
     Wrapper(async (req, res) => {
       const franchiseUser = await Session.authorizeWithSessionId(req.body);
-      res.json({ opcode: OPCODE.SUCCESS, franchiseUser });
+      throw RESULT.SUCCESS({ details: { franchiseUser } });
     })
   );
 

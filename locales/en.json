@@ -1,0 +1,21 @@
+{
+  "REQUIRED_ACCESS_KEY": "This service requires authentication.",
+  "EXPIRED_ACCESS_KEY": "Your access token has expired.",
+  "PERMISSION_DENIED": "You do not have permission. (%s)",
+  "INVALID_ERROR": "An unknown error has occurred.",
+  "FAILED_VALIDATE": "Please enter the correct information.",
+  "INVALID_API": "Invalid API address.",
+  "REQUIRED_LOGIN": "This service requires a login.",
+  "ALREADY_EXISTS_FRANCHISE": "A franchise with the same name already exists.",
+  "CANNOT_FIND_LOG": "The log does not exist.",
+  "CANNOT_FIND_PERMISSION": "Permission does not exist.",
+  "CANNOT_FIND_PERMISSION_GROUP": "The permission group does not exist.",
+  "USING_PERMISSION_GROUP": "There are %s users with permission groups.",
+  "CANNOT_FIND_FRANCHISE": "Franchise does not exist.",
+  "INVALID_EMAIL_OR_PASSWORD": "Your email or password is incorrect.",
+  "INVALID_PHONE_OR_PASSWORD": "Your phone number or password is incorrect.",
+  "NOT_CONNECTED_WITH_METHOD": "There is no associated authentication method.",
+  "CANNOT_FIND_USER": "User does not exist.",
+  "ALREADY_USING_EMAIL": "This email is already in use.",
+  "ALREADY_USING_PHONE": "This phone number is already in use."
+}

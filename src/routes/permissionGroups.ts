@@ -1,6 +1,6 @@
 import { FranchiseLogType } from '@prisma/client';
 import { Router } from 'express';
-import { Log, OPCODE, PermissionGroup, Wrapper } from '..';
+import { Log, PermissionGroup, RESULT, Wrapper } from '..';
 
 export function getPermissionGroupsRouter(): Router {
   const router = Router();
@@ -9,11 +9,9 @@ export function getPermissionGroupsRouter(): Router {
     '/',
     Wrapper(async (req, res) => {
       const { query, loggined } = req;
-      const {
-        total,
-        permissionGroups,
-      } = await PermissionGroup.getPermissionGroups(query, loggined.franchise);
-      res.json({ opcode: OPCODE.SUCCESS, permissionGroups, total });
+      const { total, permissionGroups } =
+        await PermissionGroup.getPermissionGroups(query, loggined.franchise);
+      throw RESULT.SUCCESS({ details: { permissionGroups, total } });
     })
   );
 
@@ -29,7 +27,7 @@ export function getPermissionGroupsRouter(): Router {
         franchise
       );
 
-      res.json({ opcode: OPCODE.SUCCESS, permissionGroup });
+      throw RESULT.SUCCESS({ details: { permissionGroup } });
     })
   );
 
@@ -48,7 +46,7 @@ export function getPermissionGroupsRouter(): Router {
         `${permissionGroupId} 권한 그룹을 생성하였습니다.`
       );
 
-      res.json({ opcode: OPCODE.SUCCESS, permissionGroupId });
+      throw RESULT.SUCCESS({ details: { permissionGroupId } });
     })
   );
 
@@ -72,7 +70,7 @@ export function getPermissionGroupsRouter(): Router {
         `${permissionGroupId} 권한 그룹을 수정하였습니다.`
       );
 
-      res.json({ opcode: OPCODE.SUCCESS });
+      throw RESULT.SUCCESS();
     })
   );
 
@@ -90,7 +88,7 @@ export function getPermissionGroupsRouter(): Router {
         `${permissionGroupId} 권한 그룹을 삭제하였습니다.`
       );
 
-      res.json({ opcode: OPCODE.SUCCESS });
+      throw RESULT.SUCCESS();
     })
   );
 

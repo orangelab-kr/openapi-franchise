@@ -1,5 +1,5 @@
-import { prisma, InternalError, Joi, OPCODE, PATTERN } from '..';
 import { FranchiseModel, Prisma } from '@prisma/client';
+import { Joi, PATTERN, prisma, RESULT } from '..';
 
 export class Franchise {
   /** 프렌차이즈를 생성합니다. */
@@ -14,18 +14,8 @@ export class Franchise {
 
     const { name } = await schema.validateAsync(props);
     const exists = await Franchise.isExistsFranchiseName(name);
-    if (exists) {
-      throw new InternalError(
-        '이미 존재하는 프렌차이즈 이름입니다.',
-        OPCODE.ALREADY_EXISTS
-      );
-    }
-
-    const franchise = await prisma.franchiseModel.create({
-      data: { name },
-    });
-
-    return franchise;
+    if (exists) throw RESULT.ALREADY_EXISTS_FRANCHISE();
+    return prisma.franchiseModel.create({ data: { name } });
   }
 
   /** 프렌차이즈를 수정합니다. */
@@ -45,18 +35,10 @@ export class Franchise {
     const data = await schema.validateAsync(props);
     if (name !== props.name) {
       const exists = await Franchise.isExistsFranchiseName(name);
-      if (exists) {
-        throw new InternalError(
-          '이미 존재하는 프렌차이즈 이름입니다.',
-          OPCODE.ALREADY_EXISTS
-        );
-      }
+      if (exists) throw RESULT.ALREADY_EXISTS_FRANCHISE();
     }
 
-    await prisma.franchiseModel.update({
-      where: { franchiseId },
-      data,
-    });
+    await prisma.franchiseModel.update({ where: { franchiseId }, data });
   }
 
   /** 프렌차이즈를 가져옵니다. 없을 경우 오류를 발생합니다. */
@@ -64,13 +46,7 @@ export class Franchise {
     franchiseId: string
   ): Promise<FranchiseModel> {
     const franchise = await Franchise.getFranchise(franchiseId);
-    if (!franchise) {
-      throw new InternalError(
-        '해당 프렌차이즈를 찾을 수 없습니다.',
-        OPCODE.NOT_FOUND
-      );
-    }
-
+    if (!franchise) throw RESULT.CANNOT_FIND_FRANCHISE();
     return franchise;
   }
 

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { Log, OPCODE, Wrapper } from '..';
+import { Log, RESULT, Wrapper } from '..';
 
 export function getLogsRouter(): Router {
   const router = Router();
@@ -13,7 +13,7 @@ export function getLogsRouter(): Router {
         loggined.franchise
       );
 
-      res.json({ opcode: OPCODE.SUCCESS, franchiseLogs, total });
+      throw RESULT.SUCCESS({ details: { franchiseLogs, total } });
     })
   );
 
@@ -26,7 +26,7 @@ export function getLogsRouter(): Router {
       } = req;
 
       const franchiseLog = await Log.getLogOrThrow(franchiseLogId, franchise);
-      res.json({ opcode: OPCODE.SUCCESS, franchiseLog });
+      throw RESULT.SUCCESS({ details: { franchiseLog } });
     })
   );
 

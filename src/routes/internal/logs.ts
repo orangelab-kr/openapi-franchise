@@ -2,7 +2,7 @@ import { Router } from 'express';
 import {
   InternalPermissionMiddleware,
   Log,
-  OPCODE,
+  RESULT,
   PERMISSION,
   Wrapper,
 } from '../..';
@@ -16,7 +16,7 @@ export function getInternalLogsRouter(): Router {
     Wrapper(async (req, res) => {
       const { query } = req;
       const { total, franchiseLogs } = await Log.getLogs(query);
-      res.json({ opcode: OPCODE.SUCCESS, franchiseLogs, total });
+      throw RESULT.SUCCESS({ details: { franchiseLogs, total } });
     })
   );
 
@@ -29,7 +29,7 @@ export function getInternalLogsRouter(): Router {
       } = req;
 
       const franchiseLog = await Log.getLogOrThrow(franchiseLogId);
-      res.json({ opcode: OPCODE.SUCCESS, franchiseLog });
+      throw RESULT.SUCCESS({ details: { franchiseLog } });
     })
   );
 

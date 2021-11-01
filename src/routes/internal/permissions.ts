@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import {
   InternalPermissionMiddleware,
-  OPCODE,
   PERMISSION,
   Permission,
+  RESULT,
   Wrapper,
 } from '../..';
 
@@ -15,7 +15,7 @@ export function getInternalPermissionsRouter(): Router {
     InternalPermissionMiddleware(PERMISSION.PERMISSIONS_LIST),
     Wrapper(async (req, res) => {
       const { total, permissions } = await Permission.getPermissions(req.query);
-      res.json({ opcode: OPCODE.SUCCESS, permissions, total });
+      throw RESULT.SUCCESS({ details: { permissions, total } });
     })
   );
 
@@ -25,7 +25,7 @@ export function getInternalPermissionsRouter(): Router {
     Wrapper(async (req, res) => {
       const { permissionId } = req.params;
       const permission = await Permission.getPermissionOrThrow(permissionId);
-      res.json({ opcode: OPCODE.SUCCESS, permission });
+      throw RESULT.SUCCESS({ details: { permission } });
     })
   );
 
@@ -34,7 +34,7 @@ export function getInternalPermissionsRouter(): Router {
     InternalPermissionMiddleware(PERMISSION.PERMISSIONS_CREATE),
     Wrapper(async (req, res) => {
       const { permissionId } = await Permission.createPermission(req.body);
-      res.json({ opcode: OPCODE.SUCCESS, permissionId });
+      throw RESULT.SUCCESS({ details: { permissionId } });
     })
   );
 
@@ -44,7 +44,7 @@ export function getInternalPermissionsRouter(): Router {
     Wrapper(async (req, res) => {
       const { body, params } = req;
       await Permission.modifyPermission(params.permissionId, body);
-      res.json({ opcode: OPCODE.SUCCESS });
+      throw RESULT.SUCCESS();
     })
   );
 
@@ -54,7 +54,7 @@ export function getInternalPermissionsRouter(): Router {
     Wrapper(async (req, res) => {
       const { permissionId } = req.params;
       await Permission.deletePermission(permissionId);
-      res.json({ opcode: OPCODE.SUCCESS });
+      throw RESULT.SUCCESS();
     })
   );
 

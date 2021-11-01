@@ -6,7 +6,7 @@ import {
   Prisma,
 } from '@prisma/client';
 import { Request } from 'express';
-import { InternalError, Joi, OPCODE, PATTERN, prisma } from '..';
+import { Joi, PATTERN, prisma, RESULT } from '..';
 
 export class Log {
   /** HTTP 요청을 기록합니다. */
@@ -20,13 +20,7 @@ export class Log {
       franchiseUser: { franchiseUserId },
     } = req.loggined;
 
-    if (!franchiseId || !franchiseUserId) {
-      throw new InternalError(
-        '알 수 없는 오류가 발생하였습니다.',
-        OPCODE.ERROR
-      );
-    }
-
+    if (!franchiseId || !franchiseUserId) throw RESULT.INVALID_ERROR();
     await prisma.franchiseLogModel.create({
       data: {
         franchiseId,
@@ -131,13 +125,7 @@ export class Log {
     }
   > {
     const log = await Log.getLog(franchiseLogId, franchise);
-    if (!log) {
-      throw new InternalError(
-        '해당 로그를 찾을 수 없습니다.',
-        OPCODE.NOT_FOUND
-      );
-    }
-
+    if (!log) throw RESULT.CANNOT_FIND_LOG();
     return log;
   }
 
