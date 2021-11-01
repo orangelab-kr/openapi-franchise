@@ -7,8 +7,13 @@ export class Franchise {
   /** 프렌차이즈를 생성합니다. */
   public static async createFranchise(props: {
     name: string;
+    paymentKeyId?: string;
   }): Promise<FranchiseModel> {
-    const schema = Joi.object({ name: PATTERN.FRANCHISE.NAME });
+    const schema = Joi.object({
+      name: PATTERN.FRANCHISE.NAME,
+      paymentKeyId: PATTERN.FRANCHISE.PAYMENT_KEY_ID,
+    });
+
     const { name } = await schema.validateAsync(props);
     const exists = await Franchise.isExistsFranchiseName(name);
     if (exists) {
@@ -30,9 +35,13 @@ export class Franchise {
     franchise: FranchiseModel,
     props: {
       name?: string;
+      paymentKeyId?: string;
     }
   ): Promise<void> {
-    const schema = Joi.object({ name: PATTERN.FRANCHISE.NAME });
+    const schema = Joi.object({
+      name: PATTERN.FRANCHISE.NAME,
+      paymentKeyId: PATTERN.FRANCHISE.PAYMENT_KEY_ID,
+    });
 
     const { franchiseId, name } = franchise;
     const data = await schema.validateAsync(props);
@@ -97,13 +106,8 @@ export class Franchise {
       orderBySort: PATTERN.PAGINATION.ORDER_BY.SORT,
     });
 
-    const {
-      take,
-      skip,
-      search,
-      orderByField,
-      orderBySort,
-    } = await schema.validateAsync(props);
+    const { take, skip, search, orderByField, orderBySort } =
+      await schema.validateAsync(props);
     const orderBy = { [orderByField]: orderBySort };
     const where: Prisma.FranchiseModelWhereInput = {
       OR: [

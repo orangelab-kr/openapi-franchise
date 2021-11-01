@@ -25,6 +25,7 @@ export const PATTERN = {
   FRANCHISE: {
     ID: Joi.string().uuid().required(),
     NAME: Joi.string().min(2).max(16).required(),
+    PAYMENT_KEY_ID: Joi.string().uuid().allow(null).optional(),
     LOG: {
       TYPE: Joi.array()
         .items(Joi.string().valid(...Object.keys(FranchiseLogType)))

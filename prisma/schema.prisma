@@ -13,9 +13,11 @@ generator client {
 model FranchiseModel {
   franchiseId String @id @default(uuid())
 
-  name  String
-  users FranchiseUserModel[]
-  logs  FranchiseLogModel[]
+  name         String
+  users        FranchiseUserModel[]
+  logs         FranchiseLogModel[]
+  paymentKeyId String?
+
 
   createdAt            DateTime               @default(now())
   updatedAt            DateTime               @updatedAt
