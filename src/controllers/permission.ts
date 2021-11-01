@@ -1,7 +1,5 @@
 import { PermissionModel, Prisma } from '@prisma/client';
-import { Database, InternalError, Joi, OPCODE, PATTERN } from '../tools';
-
-const { prisma } = Database;
+import { InternalError, Joi, OPCODE, PATTERN, prisma } from '..';
 
 export class Permission {
   /** 권한을 불러옵니다. 없을 경우 오류를 발생합니다. */
@@ -81,13 +79,8 @@ export class Permission {
       orderBySort: PATTERN.PAGINATION.ORDER_BY.SORT,
     });
 
-    const {
-      take,
-      skip,
-      search,
-      orderByField,
-      orderBySort,
-    } = await schema.validateAsync(props);
+    const { take, skip, search, orderByField, orderBySort } =
+      await schema.validateAsync(props);
     const orderBy = { [orderByField]: orderBySort };
     const where: Prisma.PermissionModelWhereInput = {
       OR: [

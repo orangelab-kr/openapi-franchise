@@ -7,10 +7,14 @@ import {
   Prisma,
 } from '@prisma/client';
 import { hashSync } from 'bcryptjs';
-import { InternalError, Joi, OPCODE, PATTERN, PermissionGroup } from '..';
-import { Database } from '../tools';
-
-const { prisma } = Database;
+import {
+  InternalError,
+  Joi,
+  OPCODE,
+  PATTERN,
+  PermissionGroup,
+  prisma,
+} from '..';
 
 export class User {
   public static hasPermissions(
@@ -55,13 +59,8 @@ export class User {
       password: PATTERN.FRANCHISE.USER.PASSWORD,
     });
 
-    const {
-      name,
-      email,
-      phone,
-      password,
-      permissionGroupId,
-    } = await schema.validateAsync(props);
+    const { name, email, phone, password, permissionGroupId } =
+      await schema.validateAsync(props);
     const isExists = await Promise.all([
       User.isExistsFranchiseUserEmail(email),
       User.isExistsFranchiseUserPhone(phone),
@@ -115,13 +114,8 @@ export class User {
       password: PATTERN.FRANCHISE.USER.PASSWORD.optional(),
     });
 
-    const {
-      name,
-      email,
-      phone,
-      password,
-      permissionGroupId,
-    } = await schema.validateAsync(props);
+    const { name, email, phone, password, permissionGroupId } =
+      await schema.validateAsync(props);
     const isExists = await Promise.all([
       User.isExistsFranchiseUserEmail(email),
       User.isExistsFranchiseUserPhone(phone),
@@ -186,13 +180,8 @@ export class User {
       orderBySort: PATTERN.PAGINATION.ORDER_BY.SORT,
     });
 
-    const {
-      take,
-      skip,
-      search,
-      orderByField,
-      orderBySort,
-    } = await schema.validateAsync(props);
+    const { take, skip, search, orderByField, orderBySort } =
+      await schema.validateAsync(props);
     const { franchiseId } = franchise;
     const orderBy = { [orderByField]: orderBySort };
     const where: Prisma.FranchiseUserModelWhereInput = {

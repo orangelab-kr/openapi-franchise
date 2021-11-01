@@ -1,4 +1,3 @@
-import { Database, InternalError, Joi, OPCODE, PATTERN } from '../tools';
 import {
   FranchiseLogModel,
   FranchiseLogType,
@@ -6,10 +5,9 @@ import {
   FranchiseUserModel,
   Prisma,
 } from '@prisma/client';
-
 import { Request } from 'express';
+import { InternalError, Joi, OPCODE, PATTERN, prisma } from '..';
 
-const { prisma } = Database;
 export class Log {
   /** HTTP 요청을 기록합니다. */
   public static async createRequestLog(
@@ -81,9 +79,10 @@ export class Log {
       search: PATTERN.PAGINATION.SEARCH,
       franchiseLogType: PATTERN.FRANCHISE.LOG.TYPE.optional(),
       franchiseUserId: PATTERN.FRANCHISE.USER.ID.optional(),
-      orderByField: PATTERN.PAGINATION.ORDER_BY.FIELD.valid(
-        'createdAt'
-      ).default('createdAt'),
+      orderByField:
+        PATTERN.PAGINATION.ORDER_BY.FIELD.valid('createdAt').default(
+          'createdAt'
+        ),
       orderBySort: PATTERN.PAGINATION.ORDER_BY.SORT.default('desc'),
     });
 

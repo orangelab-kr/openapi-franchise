@@ -1,7 +1,6 @@
 import { FranchiseModel, PermissionGroupModel, Prisma } from '@prisma/client';
-import { Database, InternalError, Joi, OPCODE, PATTERN } from '../tools';
+import { InternalError, Joi, OPCODE, PATTERN, prisma } from '..';
 
-const { prisma } = Database;
 export class PermissionGroup {
   /** 권한 그룹을 불러옵니다. 없으면 오류를 발생합니다. */
   public static async getPermissionGroupOrThrow(
@@ -66,13 +65,8 @@ export class PermissionGroup {
       ),
     });
 
-    const {
-      take,
-      skip,
-      search,
-      orderByField,
-      orderBySort,
-    } = await schema.validateAsync(props);
+    const { take, skip, search, orderByField, orderBySort } =
+      await schema.validateAsync(props);
     const orderBy = { [orderByField]: orderBySort };
     const where: any = {
       name: { contains: search },

@@ -1,7 +1,5 @@
-import { Database, InternalError, Joi, OPCODE, PATTERN } from '../tools';
+import { prisma, InternalError, Joi, OPCODE, PATTERN } from '..';
 import { FranchiseModel, Prisma } from '@prisma/client';
-
-const { prisma } = Database;
 
 export class Franchise {
   /** 프렌차이즈를 생성합니다. */
