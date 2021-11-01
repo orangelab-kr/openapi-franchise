@@ -1,5 +1,10 @@
 import { FranchiseModel, FranchiseUserModel } from '@prisma/client';
 import 'express';
+import {
+  InternalPlatform,
+  InternalPlatformAccessKey,
+  InternalPlatformUser,
+} from 'openapi-internal-sdk';
 
 declare global {
   namespace Express {
@@ -9,6 +14,13 @@ declare global {
       loggined: {
         franchise: FranchiseModel;
         franchiseUser: FranchiseUserModel;
+      };
+      platform: {
+        franchise: FranchiseModel;
+        platform: InternalPlatform;
+        accessKey: InternalPlatformAccessKey;
+        user: InternalPlatformUser;
+        permissionIds: string[];
       };
       internal: {
         sub: string;

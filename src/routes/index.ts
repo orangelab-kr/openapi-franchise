@@ -7,8 +7,10 @@ import {
   getLogsRouter,
   getPermissionGroupsRouter,
   getPermissionRouter,
+  getPlatformRouter,
   getUserRouter,
   InternalMiddleware,
+  PlatformMiddleware,
   RESULT,
   Wrapper,
 } from '..';
@@ -18,6 +20,7 @@ export * from './internal';
 export * from './logs';
 export * from './permissionGroups';
 export * from './permissions';
+export * from './platform';
 export * from './users';
 
 export function getRouter(): Router {
@@ -28,6 +31,7 @@ export function getRouter(): Router {
   router.use('/users', FranchiseMiddleware(), getUserRouter());
   router.use('/auth', getAuthRouter());
   router.use('/permissions', FranchiseMiddleware(), getPermissionRouter());
+  router.use('/platform', PlatformMiddleware(), getPlatformRouter());
   router.use(
     '/permissionGroups',
     FranchiseMiddleware(),
