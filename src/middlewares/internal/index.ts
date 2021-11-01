@@ -52,9 +52,9 @@ export function InternalMiddleware(): Callback {
       req.internal.prs = prs;
       if (exp.diff(iat, 'hours') > 6) throw Error();
       logger.info(
-        `[Internal] [${payload.iss}] ${payload.aud} - ${req.method} ${req.originalUrl}`
+        `Internal / ${payload.aud}(${payload.iss}) - ${req.method} ${req.originalUrl}`
       );
-    } catch (err) {
+    } catch (err: any) {
       if (process.env.NODE_ENV !== 'prod') {
         logger.error(err.message);
         logger.error(err.stack);

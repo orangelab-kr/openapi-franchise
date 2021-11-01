@@ -39,7 +39,7 @@ export class Session {
 
     try {
       session = await Session.getUserSession(sessionId);
-    } catch (err) {
+    } catch (err: any) {
       throw new InternalError(
         '로그아웃되었습니다. 다시 로그인해주세요.',
         OPCODE.REQUIRED_LOGIN
@@ -79,7 +79,7 @@ export class Session {
       }
 
       return franchiseUser;
-    } catch (err) {
+    } catch (err: any) {
       throw new InternalError(
         '이메일 또는 비밀번호가 올바르지 않습니다.',
         OPCODE.NOT_FOUND
@@ -113,7 +113,7 @@ export class Session {
       }
 
       return franchiseUser;
-    } catch (err) {
+    } catch (err: any) {
       throw new InternalError(
         '전화번호 또는 비밀번호가 올바르지 않습니다.',
         OPCODE.NOT_FOUND
@@ -193,9 +193,7 @@ export class Session {
   }
 
   /** 세션 ID 로 사용자를 불러옵니다. */
-  public static async getUserSession(
-    franchiseUserSessionId: string
-  ): Promise<
+  public static async getUserSession(franchiseUserSessionId: string): Promise<
     FranchiseUserSessionModel & {
       franchiseUser: FranchiseUserModel & {
         franchise: FranchiseModel;
