@@ -83,12 +83,13 @@ export class Franchise {
     const { take, skip, search, orderByField, orderBySort } =
       await schema.validateAsync(props);
     const orderBy = { [orderByField]: orderBySort };
-    const where: Prisma.FranchiseModelWhereInput = {
-      OR: [
+    const where: Prisma.FranchiseModelWhereInput = {};
+    if (search) {
+      where.OR = [
         { franchiseId: { contains: search } },
         { name: { contains: search } },
-      ],
-    };
+      ];
+    }
 
     const [total, franchises] = await prisma.$transaction([
       prisma.franchiseModel.count({ where }),
