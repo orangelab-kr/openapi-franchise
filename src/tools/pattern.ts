@@ -24,6 +24,7 @@ export const PATTERN = {
   },
   FRANCHISE: {
     ID: Joi.string().uuid().required(),
+    IDS: Joi.array().items(Joi.string().uuid()).single().optional(),
     NAME: Joi.string().min(2).max(16).required(),
     PAYMENT_KEY_ID: Joi.string().uuid().allow(null).optional(),
     LOG: {

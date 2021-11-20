@@ -66,6 +66,7 @@ export class Franchise {
     take?: number;
     skip?: number;
     search?: number;
+    franchiseIds?: string | string[];
     orderByField?: string;
     orderBySort?: string;
   }): Promise<{ total: number; franchises: FranchiseModel[] }> {
@@ -73,6 +74,7 @@ export class Franchise {
       take: PATTERN.PAGINATION.TAKE,
       skip: PATTERN.PAGINATION.SKIP,
       search: PATTERN.PAGINATION.SEARCH,
+      franchiseIds: PATTERN.FRANCHISE.IDS,
       orderByField: PATTERN.PAGINATION.ORDER_BY.FIELD.valid(
         'name',
         'createdAt'
@@ -80,7 +82,7 @@ export class Franchise {
       orderBySort: PATTERN.PAGINATION.ORDER_BY.SORT,
     });
 
-    const { take, skip, search, orderByField, orderBySort } =
+    const { take, skip, search, franchiseIds, orderByField, orderBySort } =
       await schema.validateAsync(props);
     const orderBy = { [orderByField]: orderBySort };
     const where: Prisma.FranchiseModelWhereInput = {};
@@ -91,6 +93,7 @@ export class Franchise {
       ];
     }
 
+    if (franchiseIds) where.franchiseId = { in: franchiseIds };
     const [total, franchises] = await prisma.$transaction([
       prisma.franchiseModel.count({ where }),
       prisma.franchiseModel.findMany({
